@@ -139,7 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "jobBoard.User"
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+    'jobBoard.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 
