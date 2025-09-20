@@ -57,7 +57,7 @@ class User(AbstractBaseUser, TimestampedModel, PermissionsMixin):
     objects = UserManager()
 
     class Meta:
-        ordering = ("-date_joined",)
+        ordering = ("-updated_at",)
         verbose_name = "user"
         verbose_name_plural = "users"
 
