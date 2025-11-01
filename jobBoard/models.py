@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.core.management.utils import get_random_secret_key
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -41,7 +40,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, True, True, **extra_fields)
 
 
-class User(AbstractBaseUser, TimestampedModel, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
