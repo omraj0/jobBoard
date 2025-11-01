@@ -3,8 +3,8 @@ from .models import Tag, Job, UserJobMapping
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug")
-    search_fields = ("name",)
+    list_display = ("name", "slug", "created_at", "updated_at",)
+    search_fields = ("name", "slug",)
     prepopulated_fields = {"slug": ("name",)}
     ordering = ("name",)
 
@@ -29,7 +29,7 @@ class JobAdmin(admin.ModelAdmin):
 
 @admin.register(UserJobMapping)
 class UserJobMappingAdmin(admin.ModelAdmin):
-    list_display = ("user", "job", "status", "updated_at")
+    list_display = ("user", "job", "status", "created_at", "updated_at")
     list_filter = ("status",)
     search_fields = ("user__email", "job__title", "job__company")
     autocomplete_fields = ("user", "job")
