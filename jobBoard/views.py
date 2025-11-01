@@ -5,15 +5,20 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 
+import yagmail
 from .models import User
 from .serializers import UserSerializer, EmailAuthTokenSerializer
 
+from django.conf import settings
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
 class SignupView(APIView):
-    serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-    def create(self, request, *args, **kwargs):
-        data = request.data.copy()
+    def post(self, request, *args, **kwargs):
+        data = request.data
         name = data.get("name", "")
         first_name = ""
         last_name = ""
@@ -25,8 +30,13 @@ class SignupView(APIView):
 
         data["first_name"] = first_name
         data["last_name"] = last_name
-        serializer = self.get_serializer(data=data)
+
+        print("Data: ", data)
+        serializer = UserSerializer(data=data)
+        print("Serializer Data: ", serializer)
         serializer.is_valid(raise_exception=True)
+        print("Validated Data: ", serializer.validated_data)
+
         email = serializer.validated_data.get("email")
         password = serializer.validated_data.get("password")
 
@@ -36,7 +46,9 @@ class SignupView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        print("Creating user...")
         user = serializer.save()
+        print("User created: ", user)
         token, _ = Token.objects.get_or_create(user=user)
         return Response({
             "message": "Signup successful",
@@ -47,10 +59,8 @@ class SignupView(APIView):
 
 
 class LoginView(ObtainAuthToken):
-    serializer_class = EmailAuthTokenSerializer
-
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer = EmailAuthTokenSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data['user']
@@ -87,3 +97,56 @@ class HelloView(APIView):
             "email": user.email,
             "message": "Hello, authenticated user!"
         }, status=status.HTTP_200_OK)
+    
+
+class ForgotPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User with this email does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        token_generator = PasswordResetTokenGenerator()
+        token = token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        reset_link = f"{settings.RESET_URL}/{uid}/{token}"
+
+        try:
+            first_name = user.first_name if user.first_name else "User"
+            mail = yagmail.SMTP(user=settings.YAGMAIL_USER, password=settings.YAGMAIL_PASSWORD)
+            subject = "Password Reset Request"
+            content = f"Hello {first_name},\n\nClick the link below to reset your password:\n\n{reset_link}\n\nIf you didn’t request this, ignore this email."
+            mail.send(to=email, subject=subject, contents=content)
+        except Exception as e:
+            return Response({"message": "If the email is registered, a reset link will be sent."}, status=status.HTTP_200_OK)
+
+        return Response({"message": "Password reset email sent"}, status=status.HTTP_200_OK)
+    
+
+class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, uidb64, token):
+        new_password = request.data.get('new_password')
+        if not new_password:
+            return Response({"error": "New password is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            uid = force_bytes(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        token_generator = PasswordResetTokenGenerator()
+        if user is not None and token_generator.check_token(user, token):
+            user.set_password(new_password)
+            user.save()
+            return Response({"message": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid token or user ID."}, status=status.HTTP_400_BAD_REQUEST)

@@ -159,3 +159,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+YAGMAIL_USER=env("YAGMAIL_USER")
+YAGMAIL_PASSWORD=env("YAGMAIL_PASSWORD")
+
+RESET_URL=env("RESET_URL", default="http://localhost:3000/reset-password")

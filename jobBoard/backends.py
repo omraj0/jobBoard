@@ -4,6 +4,7 @@ UserModel = get_user_model()
     
 class EmailBackend(ModelBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
+        print("Inside EmailBackend authenticate method")
         if email is None or password is None:
             return None
         try:
