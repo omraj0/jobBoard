@@ -30,30 +30,21 @@ class SignupView(APIView):
 
         data["first_name"] = first_name
         data["last_name"] = last_name
-
-        print("Data: ", data)
         serializer = UserSerializer(data=data)
-        print("Serializer Data: ", serializer)
         serializer.is_valid(raise_exception=True)
-        print("Validated Data: ", serializer.validated_data)
 
         email = serializer.validated_data.get("email")
-        password = serializer.validated_data.get("password")
-
         if User.objects.filter(email=email).exists():
             return Response(
                 {"detail": "Email is already registered. Please login instead."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        print("Creating user...")
         user = serializer.save()
-        print("User created: ", user)
         token, _ = Token.objects.get_or_create(user=user)
         return Response({
             "message": "Signup successful",
             "token": token.key,
-            "user_id": user.id,
             "email": user.email
         }, status=status.HTTP_201_CREATED)
 
@@ -68,7 +59,6 @@ class LoginView(ObtainAuthToken):
         return Response({
             "message": "Login successful",
             "token": token.key,
-            "user_id": user.id,
             "email": user.email
         }, status=status.HTTP_200_OK)
 
@@ -88,14 +78,17 @@ class LogOutView(APIView):
         }, status=status.HTTP_200_OK)
 
 
-class HelloView(APIView):
+class CheckView(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user = request.user
         return Response({
-            "user_id": user.id,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
             "email": user.email,
-            "message": "Hello, authenticated user!"
+            "is_staff": user.is_staff,
+            "message": "User authentication verified successfully."
         }, status=status.HTTP_200_OK)
     
 

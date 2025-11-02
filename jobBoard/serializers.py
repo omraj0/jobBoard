@@ -5,14 +5,12 @@ from django.utils.translation import gettext_lazy as _
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    print("Inside UserSerializer")
 
     class Meta:
         model = User
         fields = ["id", "email", "password", "first_name", "last_name"]
 
     def create(self, validated_data):
-        print("Creating user with data:", validated_data)
         user = User.objects.create_user(
             email=validated_data["email"],
             password=validated_data["password"],
@@ -22,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class EmailAuthTokenSerializer(serializers.Serializer):
-    print("Inside EmailAuthTokenSerializer")
     email = serializers.EmailField(label=_("Email"))
     password = serializers.CharField(
         label=_("Password"),
@@ -31,7 +28,6 @@ class EmailAuthTokenSerializer(serializers.Serializer):
     )
 
     def validate(self, attrs):
-        print("Validating with attrs")
         email = attrs.get('email')
         password = attrs.get('password')
 
