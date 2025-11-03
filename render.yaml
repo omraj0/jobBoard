@@ -11,7 +11,7 @@ services:
         value: 3.11
       - key: DATABASE_URL
         fromDatabase:
-          name: jobboard-db
+          name: jobboard
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
