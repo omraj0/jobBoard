@@ -40,9 +40,11 @@ class Job(TimestampedModel):
     class Meta:
         ordering = ("-updated_at",)
         indexes = [
-            models.Index(fields=["is_active", "location", "job_type"]),
-            models.Index(fields=["is_active", "updated_at"]),
-            models.Index(fields=["title", "company"]),
+            models.Index(
+                fields=["-updated_at"],
+                name="latest_active_job_idx",
+                condition=models.Q(is_active=True),
+            ),
         ]
 
     def __str__(self):
