@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Job, Tag
+from .models import Job, Tag, UserJobMapping
 from .permissions import CanManageJobs
 from .serializers import JobListSerializer, JobDetailSerializer, JobManagementSerializer, FilterSerializer
 
@@ -105,34 +105,34 @@ class JobDetailView(APIView):
         action = request.data.get("action")
         job = self.get_object(pk)
 
-        if action == "activity":
-            activity = request.data.get("activity")
-            if activity not in ["Clicked", "Applied", "Bookmarked"]:
-                return Response({"detail": "Invalid activity."}, status=status.HTTP_400_BAD_REQUEST)
-            
-            mapping, created = job.job_users.get_or_create(
-                user=request.user,
-                defaults={'status': activity}
-            )
-            if not created:
-                mapping.status = activity
-                mapping.save()
-            return Response({"detail": f"Job {activity} successfully."}, status=status.HTTP_200_OK)
+        valid_status = ["Clicked", "Applied", "Bookmarked"]
+        if action not in valid_status:
+            return Response({"detail": "Invalid activity."}, status=status.HTTP_400_BAD_REQUEST)
+
+        mapping, _ = UserJobMapping.objects.get_or_create(
+            user=request.user,
+            job=job,
+            defaults={'status': action}
+        )
+
+        mapping.status = action
+        mapping.save()
+        return Response({"detail": f"Job {action} successfully."}, status=status.HTTP_200_OK)
 
 
 class JobManagementListCreateView(APIView):
     permission_classes = [IsAuthenticated, CanManageJobs]
 
-    # def get(self, request, *args, **kwargs):
-    #     user = request.user
-    #     queryset = Job.objects.none()
-    #     if user.is_superuser:
-    #         queryset = Job.objects.all().select_related('posted_by')
-    #     elif user.is_staff:
-    #         queryset = Job.objects.filter(posted_by=user).select_related('posted_by')
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        queryset = Job.objects.none()
+        if user.is_superuser:
+            queryset = Job.objects.all().select_related('posted_by')
+        elif user.is_staff:
+            queryset = Job.objects.filter(posted_by=user).select_related('posted_by')
 
-    #     serializer = JobManagementSerializer(queryset, many=True)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = JobManagementSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         tags_new = []
@@ -187,3 +187,24 @@ class JobManagementDetailView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MyJobsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        applied = UserJobMapping.objects.filter(
+            user=user, status=UserJobMapping.Status.APPLIED
+        ).select_related("job")
+        applied_jobs = [JobListSerializer(mapping.job).data for mapping in applied]
+
+        bookmarked = UserJobMapping.objects.filter(
+            user=user, status=UserJobMapping.Status.BOOKMARKED
+        ).select_related("job")
+        bookmarked_jobs = [JobListSerializer(mapping.job).data for mapping in bookmarked]
+
+        return Response({
+            "applied": applied_jobs,
+            "bookmarked": bookmarked_jobs
+        },status=status.HTTP_200_OK)
