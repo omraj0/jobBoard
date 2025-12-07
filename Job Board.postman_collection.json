@@ -1,0 +1,1706 @@
+{
+	"info": {
+		"_postman_id": "41a38c3e-7f71-4c66-82c9-f4f5db5e7e79",
+		"name": "Job Board",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33072660"
+	},
+	"item": [
+		{
+			"name": "Auth API",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"if (data.token) {\r",
+									"    pm.environment.set(\"authToken\", data.token);\r",
+									"    console.log(\"Token set in environment: \" + data.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"omraj0100@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"name\": \"Om Raj\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/signup/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"if (data.token) {\r",
+									"    pm.environment.set(\"authToken\", data.token);\r",
+									"    console.log(\"Token set in environment: \" + data.token);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"omraj010@gmail.com\",\r\n    \"password\": \"password\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Log In",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"omraj010@gmail.com\",\r\n    \"password\": \"password\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/login/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:43:18 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "110"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Vary",
+									"value": "origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Login successful\",\n    \"token\": \"5950ec63e182a1db93296dfa17deb8a7de2cf023\",\n    \"email\": \"omraj010@gmail.com\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Log Out",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"authToken\", \"\");\r",
+									"console.log(\"Auth token cleared after logout.\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Auth",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/check",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"check"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Check Auth",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/auth/check",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"check"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:43:33 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "137"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"first_name\": \"Om\",\n    \"last_name\": \"Raj\",\n    \"email\": \"omraj010@gmail.com\",\n    \"is_staff\": true,\n    \"message\": \"User authentication verified successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"omraj010@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/forgot-password/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Forgot Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"omraj0100@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/forgot-password/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"forgot-password",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:43:58 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Password reset email sent\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/reset-password/Mg/czoa96-a9540d075da658b8e65eeac2ba8f3342/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"reset-password",
+								"Mg",
+								"czoa96-a9540d075da658b8e65eeac2ba8f3342",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Reset Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"new_password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/reset-password/Mg/czoa96-a9540d075da658b8e65eeac2ba8f3342/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"reset-password",
+										"Mg",
+										"czoa96-a9540d075da658b8e65eeac2ba8f3342",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:47:27 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "51"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Password has been reset successfully.\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Service API",
+			"item": [
+				{
+					"name": "Job List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/jobs/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/jobs/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:34:28 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "714"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filters\": {\n        \"tags\": [\n            \"aws\",\n            \"backend\",\n            \"spring boot\"\n        ],\n        \"title\": [\n            \"Software Dev Engineer I, Amazon University Talent Acquisition\"\n        ],\n        \"company\": [\n            \"Amazon\"\n        ],\n        \"location\": [\n            \"ADCI - Karnataka\"\n        ],\n        \"job_type\": [\n            \"Full-time\",\n            \"Part-time\",\n            \"Contract\",\n            \"Internship\"\n        ],\n        \"time\": [\n            \"last_6\",\n            \"last_24\",\n            \"this_week\",\n            \"this_month\",\n            \"all\"\n        ]\n    },\n    \"jobs\": [\n        {\n            \"id\": 1,\n            \"title\": \"Software Dev Engineer I, Amazon University Talent Acquisition\",\n            \"company\": \"Amazon\",\n            \"location\": \"ADCI - Karnataka\",\n            \"job_type\": \"Full-time\",\n            \"posted_by\": {\n                \"first_name\": \"Om\",\n                \"last_name\": \"Raj\"\n            },\n            \"tags\": [\n                {\n                    \"name\": \"aws\",\n                    \"slug\": \"aws\"\n                },\n                {\n                    \"name\": \"backend\",\n                    \"slug\": \"backend\"\n                },\n                {\n                    \"name\": \"spring boot\",\n                    \"slug\": \"spring-boot\"\n                }\n            ],\n            \"created_at\": \"2025-11-18T19:19:24.202185Z\",\n            \"updated_at\": \"2025-11-19T18:32:10.164632Z\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Job List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/jobs/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:47:52 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "714"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filters\": {\n        \"tags\": [\n            \"aws\",\n            \"backend\",\n            \"spring boot\"\n        ],\n        \"title\": [\n            \"Software Dev Engineer I, Amazon University Talent Acquisition\"\n        ],\n        \"company\": [\n            \"Amazon\"\n        ],\n        \"location\": [\n            \"ADCI - Karnataka\"\n        ],\n        \"job_type\": [\n            \"Full-time\",\n            \"Part-time\",\n            \"Contract\",\n            \"Internship\"\n        ],\n        \"time\": [\n            \"last_6\",\n            \"last_24\",\n            \"this_week\",\n            \"this_month\",\n            \"all\"\n        ]\n    },\n    \"jobs\": [\n        {\n            \"id\": 1,\n            \"title\": \"Software Dev Engineer I, Amazon University Talent Acquisition\",\n            \"company\": \"Amazon\",\n            \"location\": \"ADCI - Karnataka\",\n            \"job_type\": \"Full-time\",\n            \"posted_by\": {\n                \"first_name\": \"Om\",\n                \"last_name\": \"Raj\"\n            },\n            \"tags\": [\n                {\n                    \"name\": \"aws\",\n                    \"slug\": \"aws\"\n                },\n                {\n                    \"name\": \"backend\",\n                    \"slug\": \"backend\"\n                },\n                {\n                    \"name\": \"spring boot\",\n                    \"slug\": \"spring-boot\"\n                }\n            ],\n            \"created_at\": \"2025-11-18T19:19:24.202185Z\",\n            \"updated_at\": \"2025-11-19T18:32:10.164632Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Filter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"filter\",\r\n    \"titles\": [],\r\n    \"companies\": [],\r\n    \"location\": [],\r\n    \"job_type\": [\"Internship\", \"Full-time\"],\r\n    \"tags\": [\"aws\"],\r\n    \"time\": \"last_24_hours\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs/filter/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"filter",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Filter",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"action\": \"filter\",\r\n    \"titles\": [],\r\n    \"companies\": [],\r\n    \"location\": [],\r\n    \"job_type\": [\"Internship\", \"Full-time\"],\r\n    \"tags\": [\"aws\"],\r\n    \"time\": \"last_24_hours\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/jobs/filter/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"filter",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:35:13 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "POST, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "714"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filters\": {\n        \"tags\": [\n            \"aws\",\n            \"backend\",\n            \"spring boot\"\n        ],\n        \"title\": [\n            \"Software Dev Engineer I, Amazon University Talent Acquisition\"\n        ],\n        \"company\": [\n            \"Amazon\"\n        ],\n        \"location\": [\n            \"ADCI - Karnataka\"\n        ],\n        \"job_type\": [\n            \"Full-time\",\n            \"Part-time\",\n            \"Contract\",\n            \"Internship\"\n        ],\n        \"time\": [\n            \"last_6\",\n            \"last_24\",\n            \"this_week\",\n            \"this_month\",\n            \"all\"\n        ]\n    },\n    \"jobs\": [\n        {\n            \"id\": 1,\n            \"title\": \"Software Dev Engineer I, Amazon University Talent Acquisition\",\n            \"company\": \"Amazon\",\n            \"location\": \"ADCI - Karnataka\",\n            \"job_type\": \"Full-time\",\n            \"posted_by\": {\n                \"first_name\": \"Om\",\n                \"last_name\": \"Raj\"\n            },\n            \"tags\": [\n                {\n                    \"name\": \"aws\",\n                    \"slug\": \"aws\"\n                },\n                {\n                    \"name\": \"backend\",\n                    \"slug\": \"backend\"\n                },\n                {\n                    \"name\": \"spring boot\",\n                    \"slug\": \"spring-boot\"\n                }\n            ],\n            \"created_at\": \"2025-11-18T19:19:24.202185Z\",\n            \"updated_at\": \"2025-11-19T18:32:10.164632Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/jobs/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Detail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/jobs/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:36:19 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1231"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"Software Dev Engineer I, Amazon University Talent Acquisition\",\n    \"company\": \"Amazon\",\n    \"location\": \"ADCI - Karnataka\",\n    \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\n    \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\n    \"job_type\": \"Full-time\",\n    \"posted_by\": {\n        \"first_name\": \"Om\",\n        \"last_name\": \"Raj\"\n    },\n    \"tags\": [\n        {\n            \"name\": \"aws\",\n            \"slug\": \"aws\"\n        },\n        {\n            \"name\": \"backend\",\n            \"slug\": \"backend\"\n        },\n        {\n            \"name\": \"spring boot\",\n            \"slug\": \"spring-boot\"\n        }\n    ],\n    \"created_at\": \"2025-11-18T19:19:24.202185Z\",\n    \"updated_at\": \"2025-11-19T18:32:10.164632Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Detail Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\": \"Applied\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs/2/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"2",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Detail Status",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"action\": \"Applied\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/jobs/1/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"1",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:39:44 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Job Applied successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "My Job",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/jobs/my-jobs/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"my-jobs",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "My Job",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/jobs/my-jobs/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"my-jobs",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 09:34:52 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "437"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"clicked\": [],\n    \"applied\": [\n        {\n            \"id\": 2,\n            \"title\": \"SDE I\",\n            \"company\": \"Amazon\",\n            \"location\": \"Bangalore\",\n            \"job_type\": \"Full-time\",\n            \"posted_by\": {\n                \"first_name\": \"Om\",\n                \"last_name\": \"Raj\"\n            },\n            \"tags\": [\n                {\n                    \"name\": \"api development\",\n                    \"slug\": \"api-development\"\n                },\n                {\n                    \"name\": \"aws\",\n                    \"slug\": \"aws\"\n                },\n                {\n                    \"name\": \"backend\",\n                    \"slug\": \"backend\"\n                },\n                {\n                    \"name\": \"spring boot\",\n                    \"slug\": \"spring-boot\"\n                }\n            ],\n            \"created_at\": \"2025-11-22T08:49:27.833621Z\",\n            \"updated_at\": \"2025-11-22T09:33:59.731151Z\"\n        }\n    ],\n    \"bookmarked\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Management List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/jobs/manage",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"manage"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Management List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/jobs/manage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"manage"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:48:04 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1250"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"title\": \"Software Dev Engineer I, Amazon University Talent Acquisition\",\n        \"company\": \"Amazon\",\n        \"location\": \"ADCI - Karnataka\",\n        \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\n        \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\n        \"job_type\": \"Full-time\",\n        \"is_active\": true,\n        \"posted_by\": {\n            \"first_name\": \"Om\",\n            \"last_name\": \"Raj\"\n        },\n        \"created_at\": \"2025-11-18T19:19:24.202185Z\",\n        \"updated_at\": \"2025-11-19T18:32:10.164632Z\",\n        \"tags\": [\n            {\n                \"name\": \"aws\",\n                \"slug\": \"aws\"\n            },\n            {\n                \"name\": \"backend\",\n                \"slug\": \"backend\"\n            },\n            {\n                \"name\": \"spring boot\",\n                \"slug\": \"spring-boot\"\n            }\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Job Management Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"SDE 1\",\r\n  \"company\": \"Swiggy\",\r\n  \"location\": \"Hyderabad\",\r\n  \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\r\n  \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\r\n  \"job_type\": \"Internship\",\r\n  \"is_active\": true,\r\n  \"tags\": [\"backend\", \"aws\", \"Spring Boot\", \"NOSQL\", \"mySQL\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs/manage/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"manage",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Management Create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"title\": \"SDE I\",\r\n  \"company\": \"Amazon\",\r\n  \"location\": \"Bangalore\",\r\n  \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\r\n  \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\r\n  \"job_type\": \"Full-time\",\r\n  \"is_active\": true,\r\n  \"tags\": [\"Backend\", \"AWS\", \"Spring Boot\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/jobs/manage/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"manage",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:49:27 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1078"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"title\": \"SDE I\",\n    \"company\": \"Amazon\",\n    \"location\": \"Bangalore\",\n    \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\n    \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\n    \"job_type\": \"Full-time\",\n    \"is_active\": true,\n    \"posted_by\": {\n        \"first_name\": \"Om\",\n        \"last_name\": \"Raj\"\n    },\n    \"created_at\": \"2025-11-22T08:49:27.833621Z\",\n    \"updated_at\": \"2025-11-22T08:49:27.833621Z\",\n    \"tags\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Management Detail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs/manage/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"manage",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Management Detail",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/jobs/manage/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"manage",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:49:51 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1078"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"title\": \"SDE I\",\n    \"company\": \"Amazon\",\n    \"location\": \"Bangalore\",\n    \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\n    \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\n    \"job_type\": \"Full-time\",\n    \"is_active\": true,\n    \"posted_by\": {\n        \"first_name\": \"Om\",\n        \"last_name\": \"Raj\"\n    },\n    \"created_at\": \"2025-11-22T08:49:27.833621Z\",\n    \"updated_at\": \"2025-11-22T08:49:27.833621Z\",\n    \"tags\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Management Detail Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"SDE Intern\",\r\n    \"company\": \"Amazon\",\r\n    \"location\": \"Bangalore\",\r\n    \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\r\n  \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\r\n  \"job_type\": \"Internship\",\r\n  \"is_active\": true,\r\n  \"tags\": [\"Django\", \"PostgreSQL\", \"API Development\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs/manage/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"manage",
+								"1",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Management Detail Update",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"SDE Intern\",\r\n    \"company\": \"Amazon\",\r\n    \"location\": \"Bangalore\",\r\n    \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\r\n  \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\r\n  \"job_type\": \"Internship\",\r\n  \"is_active\": true,\r\n  \"tags\": [\"Django\", \"PostgreSQL\", \"API Development\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/jobs/manage/1/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"manage",
+										"1",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:51:36 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1191"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"title\": \"SDE Intern\",\n    \"company\": \"Amazon\",\n    \"location\": \"Bangalore\",\n    \"description\": \"Key job responsibilities - Collaborate with experienced cross-disciplinary Amazonians to conceive, design, and bring innovative products and services to market.Design and build innovative technologies in a large distributed computing environment and help lead fundamental changes in the industry. Create solutions to run predictions on distributed systems with exposure to innovative technologies at incredible scale and speed. Build distributed storage, index, and query systems that are scalable, fault-tolerant, low cost, and easy to manage/use. Design and code the right solutions starting with broadly defined problems. Work in an agile environment to deliver high-quality software.\",\n    \"application_link\": \"https://www.amazon.jobs/en/jobs/3012623/software-dev-engineer-i-amazon-university-talent-acquisition\",\n    \"job_type\": \"Internship\",\n    \"is_active\": true,\n    \"posted_by\": {\n        \"first_name\": \"Om\",\n        \"last_name\": \"Raj\"\n    },\n    \"created_at\": \"2025-11-18T19:19:24.202185Z\",\n    \"updated_at\": \"2025-11-22T08:51:36.964773Z\",\n    \"tags\": [\n        {\n            \"name\": \"aws\",\n            \"slug\": \"aws\"\n        },\n        {\n            \"name\": \"backend\",\n            \"slug\": \"backend\"\n        },\n        {\n            \"name\": \"spring boot\",\n            \"slug\": \"spring-boot\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Job Management Detail Delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"action\": \"delete\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/jobs/manage/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs",
+								"manage",
+								"1",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Job Management Detail Delete",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token {{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"action\": \"delete\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/jobs/manage/1/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"jobs",
+										"manage",
+										"1",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sat, 22 Nov 2025 08:52:06 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "WSGIServer/0.2 CPython/3.10.11"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept, origin"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, POST, HEAD, OPTIONS"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Job deleted successfully.\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

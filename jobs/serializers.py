@@ -52,3 +52,10 @@ class JobManagementSerializer(serializers.ModelSerializer):
         model = Job
         fields = ('id', 'title', 'company', 'location', 'description', 'application_link', 'job_type', 'is_active', 'posted_by', 'created_at', 'updated_at', 'tags',)
         read_only_fields = ('posted_by', 'created_at', 'updated_at')
+
+    def create(self, validated_data):
+        tags = self.context.get("tags", [])
+        job = Job.objects.create(**validated_data)
+        if tags:
+            job.tags.set(tags)
+        return job

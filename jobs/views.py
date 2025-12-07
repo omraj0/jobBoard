@@ -143,7 +143,7 @@ class JobManagementListCreateView(APIView):
             tags_new.append(tag_obj)
 
         request.data["tags"] = [tag.slug for tag in tags_new]
-        serializer = JobManagementSerializer(data=request.data)
+        serializer = JobManagementSerializer(data=request.data, context={"tags": tags_new})
         if serializer.is_valid():
             serializer.save(posted_by=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -194,17 +194,27 @@ class MyJobsView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        applied = UserJobMapping.objects.filter(
-            user=user, status=UserJobMapping.Status.APPLIED
-        ).select_related("job")
+        clicked = (
+            UserJobMapping.objects.filter(user=user, status=UserJobMapping.Status.CLICKED)
+            .select_related("job")
+            .prefetch_related("job__tags")
+        )
+        clicked_jobs = [JobListSerializer(mapping.job).data for mapping in clicked]
+
+        applied = (UserJobMapping.objects.filter(user=user, status=UserJobMapping.Status.APPLIED)
+            .select_related("job")
+            .prefetch_related("job__tags")
+        )
         applied_jobs = [JobListSerializer(mapping.job).data for mapping in applied]
 
-        bookmarked = UserJobMapping.objects.filter(
-            user=user, status=UserJobMapping.Status.BOOKMARKED
-        ).select_related("job")
+        bookmarked = (UserJobMapping.objects.filter(user=user, status=UserJobMapping.Status.BOOKMARKED)
+            .select_related("job")
+            .prefetch_related("job__tags")
+        )
         bookmarked_jobs = [JobListSerializer(mapping.job).data for mapping in bookmarked]
 
         return Response({
+            "clicked": clicked_jobs,
             "applied": applied_jobs,
             "bookmarked": bookmarked_jobs
         },status=status.HTTP_200_OK)
